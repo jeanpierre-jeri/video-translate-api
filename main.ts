@@ -1,10 +1,18 @@
 import { Hono } from 'npm:hono@4.0.10'
+import { cors } from 'npm:hono@4.0.10/cors'
 import { openai } from './lib/openai.ts'
 import { OpenAIStream, StreamingTextResponse } from 'npm:ai@3.0.7'
 
 const app = new Hono()
 
 app.get('/', (c) => c.text('Hello Deno!'))
+
+app.use(
+  '/api/*',
+  cors({
+    origin: '*'
+  })
+)
 
 app.post('/api/chat', async (c) => {
   const { messages } = await c.req.json()
